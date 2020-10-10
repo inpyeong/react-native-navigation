@@ -16,6 +16,10 @@ import {
 
 class UserScreen extends Component {
     render() {
+        const { params } = this.props.route;
+        const userIdx = params ? params.userIdx : null;
+        const userName = params ? params.userName : null;
+        const userLastName = params ? params.userLastName : null;
         return (
             <View style={{
                 flex: 1,
@@ -29,6 +33,10 @@ class UserScreen extends Component {
                         this.props.navigation.navigate('Home')
                     }}
                 />
+
+                <Text>User Idx: {JSON.stringify(userIdx)}</Text>
+                <Text>User Name: {JSON.stringify(userName)}</Text>
+                <Text>User LastName: {JSON.stringify(userLastName)}</Text>
             </View>
         )
     }
