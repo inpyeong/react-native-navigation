@@ -29,6 +29,7 @@ import UserScreen from './src/user';
 import LogoTitle from './src/logo';
 import DrawerHomeScreen from './src/home_drawer';
 import DrawerUserScreen from './src/user_drawer';
+import PictogramHome from './src/assets/pics/home_icon.png'
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -40,6 +41,7 @@ const CustomDrawerContent = (props) => {
             <DrawerItem
                 label="Help"
                 onPress={() => Linking.openURL('http://www.google.com')}
+                icon={() => <LogoTitle />}
             />
             <DrawerItem
                 label="Info"
@@ -78,7 +80,18 @@ class App extends Component {
                     }}
                     drawerContent={ props => <CustomDrawerContent {...props} /> }
                 >
-                    <Drawer.Screen name="Home" component={DrawerHomeScreen} />
+                    <Drawer.Screen
+                        name="Home"
+                        component={DrawerHomeScreen}
+                        options={{
+                            drawerIcon: () => (
+                                <Image
+                                    style={{ width: 40, height: 40 }}
+                                    source={PictogramHome}
+                                />
+                            )
+                        }}
+                    />
                     <Drawer.Screen name="User" component={DrawerUserScreen} />
                 </Drawer.Navigator>
             </NavigationContainer>

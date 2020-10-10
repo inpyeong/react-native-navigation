@@ -12,9 +12,27 @@ import {
     View,
     Text,
     Button,
+    Image,
 } from 'react-native';
+import PictogramHome from './assets/pics/home_icon.png';
 
 class DrawerUserScreen extends Component {
+
+    drawerStyle = () => {
+        this.props.navigation.setOptions({
+            drawerIcon: () => (
+                <Image
+                    style={{ width: 40, height: 40 }}
+                    source={PictogramHome}
+                />
+            )
+        })
+    }
+
+    componentDidMount = () => {
+        this.drawerStyle();
+    }
+
     render() {
         return (
             <View style={{
