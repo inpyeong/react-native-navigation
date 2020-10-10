@@ -13,6 +13,7 @@ import {
     View,
     Text,
     Image,
+    Button,
 } from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -54,7 +55,14 @@ class App extends Component {
                         component={HomeScreen}
                         options={{
                             title: 'Home Screen',
-                            headerTitle: <LogoTitle />
+                            headerTitle: <LogoTitle />,
+                            headerRight: () => (
+                                <Button
+                                    title="info"
+                                    onPress={() => alert("I am a button!")}
+                                    color="orange"
+                                />
+                            )
                         }}
                     />
                     <Stack.Screen
