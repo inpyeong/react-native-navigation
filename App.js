@@ -14,10 +14,16 @@ import {
     Text,
     Image,
     Button,
+    Linking,
 } from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import {createDrawerNavigator} from '@react-navigation/drawer';
+import {
+    createDrawerNavigator,
+    DrawerContentScrollView,
+    DrawerItemList,
+    DrawerItem,
+} from '@react-navigation/drawer';
 import HomeScreen from './src/home';
 import UserScreen from './src/user';
 import LogoTitle from './src/logo';
@@ -26,6 +32,22 @@ import DrawerUserScreen from './src/user_drawer';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
+
+const CustomDrawerContent = (props) => {
+    return (
+        <DrawerContentScrollView {...props}>
+            <DrawerItemList {...props} />
+            <DrawerItem
+                label="Help"
+                onPress={() => Linking.openURL('http://www.google.com')}
+            />
+            <DrawerItem
+                label="Info"
+                onPress={() => alert("Info window")}
+            />
+        </DrawerContentScrollView>
+    )
+}
 
 class App extends Component {
 
@@ -42,7 +64,20 @@ class App extends Component {
         return (
 
             <NavigationContainer>
-                <Drawer.Navigator>
+                <Drawer.Navigator
+                    initialRouteName="Home"
+                    drawerType="front"
+                    drawerPosition="left"
+                    drawerStyle={{
+                        backgroundColor: '#c6c6ef',
+                        width: 200
+                    }}
+                    drawerContentOptions={{
+                        activeTintColor: 'red',
+                        activeBackgroundColor: 'skyblue',
+                    }}
+                    drawerContent={ props => <CustomDrawerContent {...props} /> }
+                >
                     <Drawer.Screen name="Home" component={DrawerHomeScreen} />
                     <Drawer.Screen name="User" component={DrawerUserScreen} />
                 </Drawer.Navigator>
