@@ -26,12 +26,13 @@ class UserScreen extends Component {
             headerTitleStyle: {
                 fontWeight: 'bold',
                 color: 'green'
-            }
+            },
+            headerBackTitle: 'BACK',
         })
     }
 
     render() {
-        // this.headerStyle();
+        this.headerStyle();
         const { params } = this.props.route;
         const userIdx = params ? params.userIdx : null;
         const userName = params ? params.userName : null;
