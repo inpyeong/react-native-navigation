@@ -23,6 +23,13 @@ class TabHomeScreen extends Component {
                 justifyContent: 'center',
             }}>
                 <Text>Home Screen</Text>
+
+                <Button
+                    title="Go to Home Stack Screen"
+                    onPress={() => {
+                        this.props.navigation.navigate('Home_Stack');
+                    }}
+                />
             </View>
         );
     }

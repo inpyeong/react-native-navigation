@@ -15,8 +15,13 @@ import {
     Image,
     Button,
     Linking,
+    TouchableOpacity,
 } from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
+import {
+    NavigationContainer,
+    DrawerActions,
+    useNavigation,
+} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {
@@ -25,7 +30,7 @@ import {
     DrawerItemList,
     DrawerItem,
 } from '@react-navigation/drawer';
-import HomeScreen from './src/home';
+import StackHomeScreen from './src/home';
 import UserScreen from './src/user';
 import LogoTitle from './src/logo';
 import DrawerHomeScreen from './src/home_drawer';
@@ -35,29 +40,66 @@ import SideDrawer from './src/my_drawer';
 import TabHomeScreen from './src/home_tab';
 import TabUserScreen from './src/user_tab';
 import TabMessageScreen from './src/message_tab';
+import Ionicons from 'react-native-vector-icons/dist/Ionicons'
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 const Tab = createBottomTabNavigator();
 
+const TabComponent = () => {
+    return (
+        <Tab.Navigator
+            initialRouteName="Home"
+            tabBarOptions={{
+                activeBackgroundColor: 'skyblue',
+                activeTintColor: 'blue',
+                inactiveTintColor: '#FFF',
+                style: {
+                    backgroundColor: '#C6CBEF',
+                },
+                labelPosition: 'below-icon'
+            }}
+            screenOptions={({route}) => ({
+                tabBarLabel: route.name,
+                tabBarIcon: ({focused}) => (
+                    TabBarIcon(focused, route.name)
+                )
+            })}
+        >
+            <Tab.Screen name="Home" component={TabHomeScreen}/>
+            <Tab.Screen name="User" component={TabUserScreen}/>
+            <Tab.Screen name="Message" component={TabMessageScreen}/>
+        </Tab.Navigator>
+    );
+}
+
 const TabBarIcon = (focused, name) => {
     let iconImagePath;
+    let iconName, iconSize;
 
     if (name === 'Home') {
-        iconImagePath = require('./src/assets/pics/home_icon.png');
+        iconName = 'home-outline';
+        // iconImagePath = require('./src/assets/pics/home_icon.png');
     } else if (name === 'User') {
-        iconImagePath = require('./src/assets/pics/home_icon.png');
+        iconName = 'people-outline';
+        // iconImagePath = require('./src/assets/pics/home_icon.png');
     } else if (name === 'Message') {
-        iconImagePath = require('./src/assets/pics/home_icon.png');
+        iconName = 'mail-outline';
+        // iconImagePath = require('./src/assets/pics/home_icon.png');
     }
 
+    iconSize = focused ? 30 : 20;
     return (
-        <Image
-            style={{
-                width: focused ? 24 : 20,
-                height: focused ? 24 : 20,
-            }}
-            source = {iconImagePath}
+        // <Image
+        //     style={{
+        //         width: focused ? 24 : 20,
+        //         height: focused ? 24 : 20,
+        //     }}
+        //     source = {iconImagePath}
+        // />
+        <Ionicons
+            name={iconName}
+            size={iconSize}
         />
     )
 }
@@ -79,6 +121,45 @@ const TabBarIcon = (focused, name) => {
 //     )
 // }
 
+const DrawerComponent = () => {
+    return (
+        <Drawer.Navigator
+            initialRouteName="Home"
+            drawerType="front"
+            drawerPosition="left"
+            drawerStyle={{
+                backgroundColor: '#c6c6ef',
+                width: 200,
+            }}
+            drawerContentOptions={{
+                activeTintColor: 'red',
+                activeBackgroundColor: 'skyblue',
+            }}
+            drawerContent={props => <SideDrawer {...props} />}
+        >
+            <Drawer.Screen
+                name="Route"
+                component={TabComponent}
+            />
+        </Drawer.Navigator>
+    );
+}
+
+const HeaderRight = () => {
+    const navigation = useNavigation();
+    return (
+        <View style={{ flexDirection: 'row', paddingRight: 15 }}>
+            <TouchableOpacity
+                onPress={() => {
+                    navigation.dispatch(DrawerActions.openDrawer());
+                }}
+            >
+                <Text>Open</Text>
+            </TouchableOpacity>
+        </View>
+    )
+}
+
 class App extends Component {
 
     // logoTitle = () => {
@@ -90,32 +171,20 @@ class App extends Component {
     //     )
     // }
 
-
     render() {
         return (
             <NavigationContainer>
-                <Tab.Navigator
-                    initialRouteName="Home"
-                    tabBarOptions={{
-                        activeBackgroundColor: 'skyblue',
-                        activeTintColor: 'blue',
-                        inactiveTintColor: '#FFF',
-                        style: {
-                            backgroundColor: '#C6CBEF',
-                        },
-                        labelPosition: 'beside-icon'
-                    }}
-                    screenOptions={({route}) => ({
-                        tabBarLabel: route.name,
-                        tabBarIcon: ({focused}) => (
-                            TabBarIcon(focused, route.name)
-                        )
-                    })}
-                >
-                    <Tab.Screen name="Home" component={TabHomeScreen}/>
-                    <Tab.Screen name="User" component={TabUserScreen}/>
-                    <Tab.Screen name="Message" component={TabMessageScreen}/>
-                </Tab.Navigator>
+                <Stack.Navigator>
+                    <Stack.Screen
+                        name="Main"
+                        component={DrawerComponent}
+                        options={{
+                            headerRight: ({}) => <HeaderRight />
+                        }}
+                    />
+                    <Stack.Screen name="Home_Stack" component={StackHomeScreen} />
+
+                </Stack.Navigator>
             </NavigationContainer>
 
             // <NavigationContainer>

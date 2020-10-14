@@ -16,6 +16,7 @@ import {
 class TabUserHome extends Component {
 
     render() {
+        console.warn(this.props.route);
         return (
             <View style={{
                 flex: 1,
